@@ -1,4 +1,4 @@
-# Dropbox-in-MERN-stack
+# Dropbox Application Using Mysql,ExpressJS, ReactJs, NodeJS
 Dropbox prototype application using distributed architecture with modules of user account, file upload, file sharing, star a file, activity report with bcrypt encryption, session management, Mysql connection pooling.
 
 Load Testing on the application using Jmeter
