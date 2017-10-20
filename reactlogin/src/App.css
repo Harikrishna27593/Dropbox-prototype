@@ -100,8 +100,14 @@ body{
   float:left;
 }
 
+.direc{
+  float:left;
+  margin-left:10px;
+}
+
 .acc_det{
   float:left;
+  margin-left: 10px;
 }
 
 .fileupload{
@@ -140,7 +146,7 @@ body{
   display: none;
   position: absolute;
   background-color: #f9f9f9;
-  min-width: 160px;
+  min-width: 100px;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   z-index: 1;
 }
@@ -154,7 +160,7 @@ body{
 }
 
 /* Change color of dropdown links on hover */
-.dropdown-content a:hover {background-color: #f1f1f1}
+.dropdown-content a:hover {background-color: #007ee5}
 
 /* Show the dropdown menu on hover */
 .dropdown:hover .dropdown-content {
@@ -163,5 +169,8 @@ body{
 
 /* Change the background color of the dropdown button when the dropdown content is shown */
 .dropdown:hover .dropbtn {
-  background-color: #3e8e41;
+  background-color: #007ee5;
+}
+.tablefield{
+  text-align: left;
 }
