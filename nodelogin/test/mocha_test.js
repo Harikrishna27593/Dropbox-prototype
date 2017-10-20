@@ -5,6 +5,8 @@ var request = require('request'), express = require('express'), assert = require
 
 describe('http tests', function() {
 
+
+
     it('should return the login page if the url is correct', function(done) {
         http.get('http://localhost:3001/', function(res) {
             assert.equal(200, res.statusCode);
@@ -18,15 +20,13 @@ describe('http tests', function() {
              done();
          })
      });
-    it('should login', function(done) {
-        request.post('/users/doLogin', {
-           // form : {
-                Email: 'hknitw@gmail.com',
-                password : '1234567q'
-           // }
-        }, function(error, response, body) {
-            assert.equal(201, response.statusCode);
-            done();
-        });
+
+    it('POST /users should return 201',function(done){
+        request()
+            .post('/users/doLogin')
+            .set('Content-Type','application/json')
+            .write(JSON.stringify({ Email:'hknitw@gmail.com', password :'1234567q' }))
+            .expect(201,done);
     });
+
 });
