@@ -22,8 +22,9 @@ var storage = multer.diskStorage({
 
 var upload = multer({storage:storage});
 
+
 var pool = mysql.createPool({
-    connectionLimit: 1000,
+    connectionLimit: 100000,
     host: 'localhost',
     user: 'hk',
     password: 'hk275',
@@ -43,7 +44,7 @@ router.get('/getimg', function (req, res,  next) {
                 console.log("error_herein inserting into activity");
             }
             else {
-                if (rows) {
+              //  if (rows) {
                     var resArr = [];
                     resArr = rows.map(function (file) {
 
@@ -60,13 +61,13 @@ router.get('/getimg', function (req, res,  next) {
                         return imgJSON;
 
                     });
-                    console.log(resArr)
+                    //console.log(resArr)
                     res.status(200).send(resArr);
 
-                }
-                else {
-
-                }
+                // }
+                // else {
+                //
+                // }
 
             }
 
@@ -84,7 +85,7 @@ router.get('/getdetails', function (req, res,  next) {
     pool.getConnection(function(err, connection) {
 
         var get_details = "select * from user_profile where EMAIL= (" + connection.escape(uname) + ");";
-        console.log(get_details)
+       // console.log(get_details)
         connection.query(get_details, function (err, rows, fields) {
             if (err) {
                 console.log("error_herein getdetails");
@@ -92,7 +93,7 @@ router.get('/getdetails', function (req, res,  next) {
             else {
 
                 var i=0;
-                if (rows) {
+                // if (rows) {
                     var detailsarr = [];
 
                     detailsarr = rows.map(function (file) {
@@ -108,15 +109,15 @@ router.get('/getdetails', function (req, res,  next) {
                         return DetailsJSON;
                     });
 
-                    console.log(detailsarr);
+                    //console.log(detailsarr);
                     res.status(200).send(detailsarr);
 
                 }
-                else {
-                    //
-                }
+                // else {
+                //     //
+                // }
 
-            }
+            // }
 
         });
         connection.release();
@@ -138,13 +139,13 @@ router.post('/delete', function (req, res, next) {
             else
             {
                 //if(results.length > 0){
-                if(rows){
-                    //console.log(activity);
-                    console.log("Inserted activity");
-                }
-                else {
-                    //
-                }
+                // if(rows){
+                //     //console.log(activity);
+                //     //console.log("Inserted activity");
+                // }
+                // else {
+                //     //
+                // }
             }
         });
 
@@ -162,15 +163,15 @@ router.post('/delete', function (req, res, next) {
             else
             {
                 //if(results.length > 0){
-                if(rows){
-                    //console.log(activity);
-                    console.log("Inserted activity");
-                }
-                else {
-
-
-                    //
-                }
+                // if(rows){
+                //     //console.log(activity);
+                //     //console.log("Inserted activity");
+                // }
+                // else {
+                //
+                //
+                //     //
+                // }
             }
 
         });
@@ -183,6 +184,47 @@ router.post('/delete', function (req, res, next) {
 
     res.status(204).end();
 });
+
+
+router.post('/directory', function (req, res, next) {
+    pool.getConnection(function(err, connection) {
+        var d = moment().format('MMMM Do YYYY h:mm:ss a')
+        var path='./public/uploads/'+req.body.folder
+        var starred=0;
+        var permission=1;
+        if (!fs.existsSync(path)){
+            fs.mkdirSync(path);
+        }
+        var uploaded = "insert into UPLOAD_INFO(USERNAME,ACTIVITY_TIME,STARRED,PATH,PERMISSION) values (" + connection.escape(uname) + " ," + connection.escape(d) + " ," + connection.escape(starred) + "," + connection.escape(path)+"," + connection.escape(permission)+");";
+        connection.query(uploaded, function(err, rows, fields) {
+            if(err){
+                console.log("error_herein inserting into activity");
+            }
+            else
+            {
+                //if(results.length > 0){
+                // if(rows){
+                //     //console.log(activity);
+                //     //console.log("Inserted activity");
+                // }
+                // else {
+                //
+                //
+                //     //
+                // }
+            }
+
+        });
+
+
+        connection.release();
+
+    });
+
+    res.status(204).end();
+});
+
+
 
 router.post('/star', function (req, res, next) {
     pool.getConnection(function(err, connection) {
@@ -197,13 +239,13 @@ router.post('/star', function (req, res, next) {
             else
             {
                 //if(results.length > 0){
-                if(rows){
-                    //console.log(activity);
-                    console.log("Inserted activity");
-                }
-                else {
-                    //
-                }
+                // if(rows){
+                //     //console.log(activity);
+                //    // console.log("Inserted activity");
+                // }
+                // else {
+                //     //
+                // }
             }
         });
 
@@ -217,15 +259,15 @@ router.post('/star', function (req, res, next) {
             else
             {
                 //if(results.length > 0){
-                if(rows){
-                    //console.log(activity);
-                    console.log("Inserted activity");
-                }
-                else {
-
-
-                    //
-                }
+                // if(rows){
+                //     //console.log(activity);
+                //     //console.log("Inserted activity");
+                // }
+                // else {
+                //
+                //
+                //     //
+                // }
             }
 
         });
@@ -252,13 +294,13 @@ router.post('/unstar', function (req, res, next) {
             else
             {
                 //if(results.length > 0){
-                if(rows){
-                    //console.log(activity);
-                    console.log("Inserted activity");
-                }
-                else {
-                    //
-                }
+                // if(rows){
+                //     //console.log(activity);
+                //     //console.log("Inserted activity");
+                // }
+                // else {
+                //     //
+                // }
             }
         });
 
@@ -272,15 +314,15 @@ router.post('/unstar', function (req, res, next) {
             else
             {
                 //if(results.length > 0){
-                if(rows){
-                    //console.log(activity);
-                    console.log("Inserted activity");
-                }
-                else {
-
-
-                    //
-                }
+                // if(rows){
+                //     //console.log(activity);
+                //    // console.log("Inserted activity");
+                // }
+                // else {
+                //
+                //
+                //     //
+                // }
             }
 
         });
@@ -307,13 +349,13 @@ router.post('/share', function (req, res, next) {
             else
             {
                 //if(results.length > 0){
-                if(rows){
-                    //console.log(activity);
-                    console.log("Inserted activity");
-                }
-                else {
-                    //
-                }
+                // if(rows){
+                //     //console.log(activity);
+                //     //console.log("Inserted activity");
+                // }
+                // else {
+                //     //
+                // }
             }
         });
 
@@ -330,15 +372,15 @@ router.post('/share', function (req, res, next) {
             else
             {
                 //if(results.length > 0){
-                if(rows){
-                    //console.log(activity);
-                    console.log("Inserted activity");
-                }
-                else {
-
-
-                    //
-                }
+                // if(rows){
+                //     //console.log(activity);
+                //     //console.log("Inserted activity");
+                // }
+                // else {
+                //
+                //
+                //     //
+                // }
             }
 
         });
@@ -366,13 +408,7 @@ router.post('/upload', upload.single('mypic'), function (req, res, next) {
             else
             {
                 //if(results.length > 0){
-                if(rows){
-                    //console.log(activity);
-                    console.log("Inserted activity");
-                }
-                else {
-                    //
-                }
+
             }
         });
         var starred=0;
@@ -386,15 +422,15 @@ router.post('/upload', upload.single('mypic'), function (req, res, next) {
             else
             {
                 //if(results.length > 0){
-                if(rows){
-                    //console.log(activity);
-                    console.log("Inserted activity");
-                }
-                else {
-
-
-                    //
-                }
+                // if(rows){
+                //     //console.log(activity);
+                //     //console.log("Inserted activity");
+                // }
+                // else {
+                //
+                //
+                //     //
+                // }
             }
 
         });
@@ -421,7 +457,7 @@ router.get('/showActivity',function (req, res, next) {
             else
             {
 
-                if(rows){
+
                     var resultarr = [];
 
                     resultarr = rows.map(function (file) {
@@ -436,11 +472,7 @@ router.get('/showActivity',function (req, res, next) {
 
                     res.status(200).send(resultarr);
                 }
-                else {
 
-                    //
-                }
-            }
 
         });
         connection.release();
@@ -469,7 +501,7 @@ router.post('/logout', function (req, res, next) {
                 //if(results.length > 0){
                 if(rows){
                     //console.log(activity);
-                    console.log("Inserted activity");
+                    //console.log("Inserted activity");
                     res.status(201).json({message: "Logout successful"});
                 }
                 else {
@@ -495,20 +527,21 @@ router.post('/doLogin', function (req, res, next) {
     pool.getConnection(function (err, connection) {
         var d=moment().format('MMMM Do YYYY h:mm:ss a')
         var loggedin="Signed_in";
+
+
         var query1="select PASSWORD from DROPBOX_USERSS where USER_NAME="+connection.escape(reqUsername)+"";
-        var activity="insert into user_activity(USERNAME,ACTIVITY_TIME,ACTIVITY) values ("+connection.escape(reqUsername)+" ," + connection.escape(d) +" ," + connection.escape(loggedin)+");";
+         activity="insert into user_activity(USERNAME,ACTIVITY_TIME,ACTIVITY) values ("+connection.escape(reqUsername)+" ," + connection.escape(d) +" ," + connection.escape(loggedin)+");";
         connection.query(query1, function (err, rows, fields) {
             if (err) {
                 res.status(401).json({message: "Login failed"});
             }
             else {
-
-                if (rows) {
+                // if (rows) {
                     try {
                         var orgPassword = bcrypt.compareSync(reqPassword, rows[0].PASSWORD);
                     }
                     catch(e){
-                        res.status(401).json({message: "Login failed"});
+                        res.status(401).json({message: "Login failed_here"});
                     }
 
 
@@ -519,34 +552,34 @@ router.post('/doLogin', function (req, res, next) {
 
                     }
                     else {
-                        res.status(401).json({message: "Login failed"});
+                        res.status(401).json({message: "Login failed..here"});
                     }
                 }
-                else {
-                    res.status(401).json({message: "Login failed"});
-                    //
-                }
-            }
+            //     else {
+            //         res.status(401).json({message: "Login failed"});
+            //         //
+            //     }
+            // }
         });
-        connection.query(activity, function(err, rows, fields) {
-            if(err){
-                console.log("error_herein inserting into activity");
-            }
-            else
-            {
-                //if(results.length > 0){
-                if(rows){
-                    //console.log(activity);
-                    console.log("Inserted activity");
-                }
-                else {
+         connection.query(activity, function(err, rows, fields) {
+             if(err){
+                 console.log("error_herein inserting into activity");
+             }
+             else
+             {
+                 //if(results.length > 0){
+                 // if(rows){
+                 //     //console.log(activity);
+                 //     //console.log("Inserted activity");
+                 // }
+                 // else {
+                 //
+                 //
+                 //     //
+                 // }
+             }
 
-
-                    //
-                }
-            }
-
-        });
+         });
 
     });
 
@@ -588,7 +621,7 @@ router.post('/dosignup', function (req, res, next) {
                         {
                             //if(results.length > 0){
                             if(rows){
-                                console.log("Inserted");
+                                //console.log("Inserted");
                                 res.status(201).json({message: "Sign up successfull"});
                             }
                             else {
@@ -606,15 +639,15 @@ router.post('/dosignup', function (req, res, next) {
                             else
                             {
                                 //if(results.length > 0){
-                                if(rows){
-                                    //console.log(activity);
-                                    console.log("Inserted activity");
-                                }
-                                else {
-
-
-                                    //
-                                }
+                                // if(rows){
+                                //     //console.log(activity);
+                                //     console.log("Inserted activity");
+                                // }
+                                // else {
+                                //
+                                //
+                                //     //
+                                // }
                             }
 
                         });
