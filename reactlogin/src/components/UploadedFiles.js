@@ -31,16 +31,28 @@ class UploadedFiles extends Component {
     };
 
 
-    componentDidMount() {
-        API.getImages()
-            .then((data) => {
-                console.log(data);
-                this.setState({
-                    images: data
-                });
-            });
+    // componentDidMount() {
+    //     API.getImages()
+    //         .then((data) => {
+    //             console.log(data);
+    //             this.setState({
+    //                 images: data
+    //             });
+    //         });
+    // }
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            images_here: [],
+        };
     }
 
+
+    componentWillReceiveProps(props){
+        this.setState({images_here:props.images});
+        //console.log(this.state.images_here);
+    }
 
     handleDelete = (path,permission) => {
         if(permission==='0')
@@ -95,22 +107,22 @@ class UploadedFiles extends Component {
                     <tr>
                         <th>File Name</th>
                         <th>Modified Date</th>
-                        <th>Status</th>
+                       <th>Status</th>
                         <th>Select</th>
                     </tr>
                     </thead>
                     <tbody>
 
-                    {this.props.images.map(tile => (
+                    {this.state.images_here.map(tile => (
                         <tr key={tile.img} cols={tile.cols || 1}>
-                            <td> <a href={'http://localhost:3001/uploads/'+tile.img}  download >{tile.img}</a></td>
-                            <td>{tile.timer}</td>
-                            <td>{tile.starred}</td>
-                            <td> <div className="dropdown">
+                            <td className={'tablefield'}> <a href={'http://localhost:3001/uploads/'+tile.img}  download >{tile.img}</a></td>
+                            <td className={'tablefield'}>{tile.timer}</td>
+                            <td className={'tablefield'}>{tile.starred}</td>
+                            <td className={'tablefield'}> <div className="dropdown">
                                 <button className="dropbtn">...</button>
                                 <div className="dropdown-content">
-                                    <button className="btn btn-light" onClick={() => this.handleStar(tile.img)}>Star this file</button>
-                                    <button className="btn btn-light" onClick={() => this.handleUnStar(tile.img)}>UnStar this file </button>
+                                    <button className="btn btn-light" onClick={() => this.handleStar(tile.img)}>Star</button>
+                                    <button className="btn btn-light" onClick={() => this.handleUnStar(tile.img)}>UnStar</button>
                                     <button className="btn btn-light" onClick={() => this.handleShare(tile.img)}>Share </button>
                                     <button className="btn btn-light" onClick={() => this.handleDelete(tile.img,tile.permission)}>Delete</button>
 
